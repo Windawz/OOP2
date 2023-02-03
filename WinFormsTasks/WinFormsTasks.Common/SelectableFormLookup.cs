@@ -68,5 +68,5 @@ internal static class SelectableFormLookup {
                 type: type,
                 attribute: type.GetCustomAttribute<SelectableFormAttribute>()))
             .Where(target => target.attribute is not null)
-            .Select(target => (target.type, attribute: (SelectableFormAttribute)target.attribute!));
+            .Select(target => (target.type, attribute: target.attribute!));
 }
