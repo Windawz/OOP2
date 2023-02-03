@@ -83,4 +83,20 @@ public partial class SelectorForm : Form {
             control.Visible = true;
         }
     }
+
+    private static string FormatFormName(string rawFormName) {
+        static bool IsSpacedAway(char c) =>
+            char.IsUpper(c)
+            || char.IsNumber(c);
+
+        var formattedName = new StringBuilder(rawFormName.Length + 8);
+        foreach (char c in rawFormName) {
+            if (IsSpacedAway(c)) {
+                formattedName.Append(' ');
+            }
+            formattedName.Append(c);
+        }
+
+        return formattedName.ToString();
+    }
 }

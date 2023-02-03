@@ -21,17 +21,8 @@ internal static class SelectableFormLookup {
             Factory: GetFactory(target.type),
             FormName: target.attribute.FormName ?? GetFormName(target.type)));
 
-    private static string GetFormName(Type targetType) {
-        string typeName = targetType.Name;
-        var formattedName = new StringBuilder(typeName.Length + 8);
-        foreach (char c in typeName) {
-            if (char.IsUpper(c)) {
-                formattedName.Append(' ');
-            }
-            formattedName.Append(c);
-        }
-        return formattedName.ToString();
-    }
+    private static string GetFormName(Type targetType) =>
+        targetType.Name;
 
     private static Func<Form> GetFactory(Type targetType) =>
         Expression.Lambda<Func<Form>>(
