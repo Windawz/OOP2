@@ -16,10 +16,10 @@ internal static class SelectableFormLookup {
         return EnumerateFormInfos(validTargets);
     }
 
-    private static IEnumerable<SelectableFormInfo> EnumerateFormInfos(IEnumerable<(Type type, SelectableFormAttribute attribute)> targets) =>
+    private static IEnumerable<SelectableFormInfo> EnumerateFormInfos(IEnumerable<Target> targets) =>
         targets.Select(target => new SelectableFormInfo(
-            Factory: GetFactory(target.type),
-            FormName: target.attribute.FormName ?? GetFormName(target.type)));
+            Factory: GetFactory(target.Type),
+            FormName: target.Attribute.FormName ?? GetFormName(target.Type)));
 
     private static string GetFormName(Type targetType) =>
         targetType.Name;
@@ -30,24 +30,24 @@ internal static class SelectableFormLookup {
             Array.Empty<ParameterExpression>())
         .Compile();
 
-    private static IEnumerable<(Type type, SelectableFormAttribute attribute)> EnumerateValidTargets(
-        IEnumerable<(Type type, SelectableFormAttribute attribute)> targets,
-        IEnumerable<(Type type, SelectableTargetException exception)> invalidTargets
+    private static IEnumerable<Target> EnumerateValidTargets(
+        IEnumerable<Target> targets,
+        IEnumerable<InvalidTarget> invalidTargets
     ) =>
-        targets.ExceptBy(invalidTargets.Select(target => target.type), target => target.type);
+        targets.ExceptBy(invalidTargets.Select(target => target.Type), target => target.Type);
 
-    private static void ThrowIfAnyInvalidTargets(IEnumerable<(Type type, SelectableTargetException exception)> invalidTargets) {
+    private static void ThrowIfAnyInvalidTargets(IEnumerable<InvalidTarget> invalidTargets) {
         if (invalidTargets.Any()) {
-            throw invalidTargets.First().exception;
+            throw invalidTargets.First().Exception;
         }
     }
 
-    private static IEnumerable<(Type targetType, SelectableTargetException exception)> EnumerateInvalidTargets(
-        IEnumerable<(Type type, SelectableFormAttribute attribute)> targets
+    private static IEnumerable<InvalidTarget> EnumerateInvalidTargets(
+        IEnumerable<Target> targets
     ) =>
-        targets.Select(target => (type: target.type, exception: GetExceptionIfInvalidTarget(target.type)))
+        targets.Select(target => (type: target.Type, exception: GetExceptionIfInvalidTarget(target.Type)))
             .Where(target => target.exception is not null)
-            .Select(target => (type: target.type, exception: target.exception!));
+            .Select(target => new InvalidTarget(target.type, target.exception!));
 
     private static SelectableTargetException? GetExceptionIfInvalidTarget(Type targetType) =>
         !IsValidTargetType(targetType)
@@ -62,11 +62,19 @@ internal static class SelectableFormLookup {
     private static bool IsValidTargetType(Type targetType) =>
         targetType.IsAssignableTo(typeof(Form));
 
-    private static IEnumerable<(Type, SelectableFormAttribute)> EnumerateTargets(Assembly assembly) =>
+    private static IEnumerable<Target> EnumerateTargets(Assembly assembly) =>
         assembly.ExportedTypes
             .Select(type => (
                 type: type,
                 attribute: type.GetCustomAttribute<SelectableFormAttribute>()))
             .Where(target => target.attribute is not null)
-            .Select(target => (target.type, attribute: target.attribute!));
+            .Select(target => new Target(target.type, target.attribute!));
+
+    private readonly record struct Target(
+        Type Type,
+        SelectableFormAttribute Attribute);
+
+    private readonly record struct InvalidTarget(
+        Type Type,
+        SelectableTargetException Exception);
 }
