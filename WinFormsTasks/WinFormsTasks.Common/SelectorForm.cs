@@ -35,25 +35,10 @@ public partial class SelectorForm : Form {
     }
 
     private static Button MakeOpenerButton(SelectableFormInfo info) {
-        var button = new Button() {
+        return new FormOpenerButton(info.Factory) {
             AutoSize = true,
             Text = info.FormName,
         };
-
-        void OnClick(object? sender, EventArgs e) {
-            button.Click -= OnClick;
-            var form = info.Factory();
-            form.FormClosing += delegate {
-                button.Click += OnClick;
-            };
-
-            form.Show();
-            form.Activate();
-        }
-
-        button.Click += OnClick;
-
-        return button;
     }
 
     private static void AdjustSize(IEnumerable<Control> controls) {
