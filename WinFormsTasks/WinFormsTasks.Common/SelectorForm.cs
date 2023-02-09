@@ -20,35 +20,23 @@ public partial class SelectorForm : Form {
     private SelectorForm(IEnumerable<SelectableFormInfo> infos) {
         InitializeComponent();
 
-        var buttons = infos.Select(info => MakeOpenerButton(info));
-        var container = MakeButtonContainer(buttons);
+        var buttons = infos
+            .Select(info => MakeOpenerButton(info))
+            .ToArray();
+
+        var container = new StackPanel() {
+            Dock = DockStyle.Fill,
+        };
+        container.Controls.AddRange(buttons);
+
         Controls.Add(container);
 
         Text = "Form Selector";
     }
 
-    private static Control MakeButtonContainer(IEnumerable<Button> buttons) {
-        var container = new FlowLayoutPanel() {
-            AutoScroll = true,
-            BorderStyle = BorderStyle.Fixed3D,
-            Dock = DockStyle.Fill,
-            FlowDirection = FlowDirection.TopDown,
-            Padding = new(0, 0, 7, 0),
-            WrapContents = false,
-        };
-
-        container.Controls.AddRange(buttons.ToArray());
-        container.SizeChanged += delegate {
-            AdjustSize(container.Controls.Cast<Control>());
-        };
-
-        return container;
-    }
-
     private static Button MakeOpenerButton(SelectableFormInfo info) {
         var button = new Button() {
             AutoSize = true,
-            AutoSizeMode = AutoSizeMode.GrowOnly,
             Text = info.FormName,
         };
 
