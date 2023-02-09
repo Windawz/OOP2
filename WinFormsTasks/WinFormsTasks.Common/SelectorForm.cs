@@ -12,11 +12,8 @@ using System.Windows.Forms;
 namespace WinFormsTasks.Common;
 public partial class SelectorForm : Form {
     public SelectorForm() : this(Assembly.GetCallingAssembly()) { }
-
-    public SelectorForm(params SelectableFormInfo[] infos) : this(infos.AsEnumerable()) { }
-
-    private SelectorForm(Assembly assembly) : this(SelectableFormLookup.EnumerateFormInfos(assembly)) { }
-
+    public SelectorForm(params (Type formType, string? formName)[] tuples) : this(TuplesToInfos(tuples)) { }
+    private SelectorForm(Assembly assembly) : this(SelectableFormInfo.EnumerateSelectableForms(assembly)) { }
     private SelectorForm(IEnumerable<SelectableFormInfo> infos) {
         InitializeComponent();
 
@@ -56,4 +53,7 @@ public partial class SelectorForm : Form {
 
         return formattedName.ToString();
     }
+
+    private static IEnumerable<SelectableFormInfo> TuplesToInfos(IEnumerable<(Type formType, string? formName)> tuples) =>
+        tuples.Select(tuple => SelectableFormInfo.FromType(tuple.formType, tuple.formName));
 }
