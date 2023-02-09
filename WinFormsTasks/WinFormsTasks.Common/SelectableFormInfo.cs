@@ -7,4 +7,5 @@ using System.Threading.Tasks;
 namespace WinFormsTasks.Common;
 public readonly record struct SelectableFormInfo(
     Func<Form> Factory,
-    string FormName);
+    string? FormName,
+    Type FormType);

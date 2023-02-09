@@ -37,7 +37,7 @@ public partial class SelectorForm : Form {
     private static Button MakeOpenerButton(SelectableFormInfo info) {
         return new FormOpenerButton(info.Factory) {
             AutoSize = true,
-            Text = info.FormName,
+            Text = info.FormName ?? FormatFormName(info.FormType.Name),
         };
     }
 

@@ -19,10 +19,8 @@ internal static class SelectableFormLookup {
     private static IEnumerable<SelectableFormInfo> EnumerateFormInfos(IEnumerable<Target> targets) =>
         targets.Select(target => new SelectableFormInfo(
             Factory: GetFactory(target.Type),
-            FormName: target.Attribute.FormName ?? GetFormName(target.Type)));
-
-    private static string GetFormName(Type targetType) =>
-        targetType.Name;
+            FormName: target.Attribute.FormName,
+            FormType: target.Type));
 
     private static Func<Form> GetFactory(Type targetType) =>
         Expression.Lambda<Func<Form>>(
