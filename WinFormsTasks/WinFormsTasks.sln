@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsTasks.Task7", "WinFormsTasks.Task7\WinFormsTasks.Task7.csproj", "{CD68C66C-F3D4-4205-9199-0FE80A3FF687}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsTasks.Common", "WinFormsTasks.Common\WinFormsTasks.Common.csproj", "{5C12ECAD-3D6A-40E1-AEFB-5523B7053E80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsTasks.Common", "WinFormsTasks.Common\WinFormsTasks.Common.csproj", "{5C12ECAD-3D6A-40E1-AEFB-5523B7053E80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsTasks.Task8", "Task8\WinFormsTasks.Task8.csproj", "{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5C12ECAD-3D6A-40E1-AEFB-5523B7053E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C12ECAD-3D6A-40E1-AEFB-5523B7053E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C12ECAD-3D6A-40E1-AEFB-5523B7053E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
