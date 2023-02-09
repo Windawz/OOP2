@@ -41,22 +41,6 @@ public partial class SelectorForm : Form {
         };
     }
 
-    private static void AdjustSize(IEnumerable<Control> controls) {
-        if (!controls.Any()) {
-            return;
-        }
-        var parent = controls.First().Parent
-            ?? throw new InvalidOperationException("Control whose size is adjusted has no parent");
-        int width = parent.ClientSize.Width - parent.Padding.Right;
-        int height = controls.Select(b => b.Height).Max();
-        foreach (var control in controls) {
-            control.AutoSize = false;
-            control.Width = width;
-            control.Height = height;
-            control.Visible = true;
-        }
-    }
-
     private static string FormatFormName(string rawFormName) {
         static bool IsSpacedAway(char c) =>
             char.IsUpper(c)
