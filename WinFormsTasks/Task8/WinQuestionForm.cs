@@ -56,6 +56,10 @@ public partial class WinQuestionForm : Form {
             }
         };
 
+        buttonNo.Click += delegate {
+            Application.Exit();
+        };
+
         Controls.Add(label);
         Controls.Add(buttonYes);
         Controls.Add(buttonNo);
