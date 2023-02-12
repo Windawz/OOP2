@@ -33,16 +33,10 @@ internal readonly record struct SelectableFormInfo(
         }
 
         return new SelectableFormInfo(
-            GetFactory(formType),
+            FormFactory.Get(formType),
             formName,
             formType);
     }
-
-    private static Func<Form> GetFactory(Type formType) =>
-        Expression.Lambda<Func<Form>>(
-            Expression.New(formType),
-            Array.Empty<ParameterExpression>())
-        .Compile();
 
     private static IEnumerable<Target> EnumerateValidTargets(
         IEnumerable<Target> targets,
