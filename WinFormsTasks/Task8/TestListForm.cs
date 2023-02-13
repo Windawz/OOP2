@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using WinFormsTasks.Common;
 
 namespace WinFormsTasks.Task8;
-[SelectableForm("TestList (Excercise 2)")]
+[SelectableForm("TestList (Excercise 2)", 2)]
 public partial class TestListForm : Form {
     public TestListForm() {
         InitializeComponent();

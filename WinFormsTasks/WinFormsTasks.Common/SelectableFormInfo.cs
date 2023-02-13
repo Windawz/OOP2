@@ -7,21 +7,39 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WinFormsTasks.Common;
-internal readonly record struct SelectableFormInfo(
-    FormFactory Factory,
-    string? FormName
-) {
+internal readonly struct SelectableFormInfo {
+    public SelectableFormInfo(FormFactory factory, string? formName, int weight) {
+        Factory = factory;
+        FormName = formName;
+        Weight = weight;
+    }
+
+    public FormFactory Factory { get; }
+    public string? FormName { get; }
+    public int Weight { get; }
+
     public static IEnumerable<SelectableFormInfo> EnumerateSelectableForms(Assembly assembly) {
         var targets = EnumerateTargets(assembly);
         var invalidTargets = EnumerateInvalidTargets(targets);
         ThrowIfAnyInvalidTargets(invalidTargets);
         var validTargets = EnumerateValidTargets(targets, invalidTargets);
-        return validTargets.Select(target => SelectableFormInfo.FromType(
+        return validTargets.Select(target => Create(
             target.Type,
-            target.Attribute.FormName));
+            target.Attribute));
     }
 
-    public static SelectableFormInfo FromType(Type formType, string? formName) {
+    public static SelectableFormInfo Create(Type formType) {
+        var attribute = formType.GetCustomAttribute<SelectableFormAttribute>();
+        if (attribute is null) {
+            throw new ArgumentException($"Type has no {nameof(SelectableFormAttribute)}", nameof(formType));
+        }
+        return Create(formType, attribute);
+    }
+
+    public static SelectableFormInfo Create(Type formType, SelectableFormAttribute attribute) =>
+        Create(formType, attribute.FormName, attribute.Weight);
+
+    public static SelectableFormInfo Create(Type formType, string? formName, int weight) {
         var exception = GetExceptionIfInvalidType(formType);
 
         if (exception is not null) {
@@ -33,7 +51,8 @@ internal readonly record struct SelectableFormInfo(
 
         return new SelectableFormInfo(
             FormFactory.Get(formType),
-            formName);
+            formName,
+            weight);
     }
 
     private static IEnumerable<Target> EnumerateValidTargets(
@@ -56,7 +75,7 @@ internal readonly record struct SelectableFormInfo(
             .Select(target => new InvalidTarget(target.type, target.exception!));
 
     private static SelectableTargetException? GetExceptionIfInvalidType(Type formType) =>
-        !IsValidTargetType(formType)
+        !FormType.IsFormType(formType)
             ? new SelectableTargetTypeException(formType)
             : !HasValidConstructor(formType)
                 ? new SelectableTargetFactoryException(formType)
@@ -64,9 +83,6 @@ internal readonly record struct SelectableFormInfo(
 
     private static bool HasValidConstructor(Type formType) =>
         formType.GetConstructor(Array.Empty<Type>()) is not null;
-
-    private static bool IsValidTargetType(Type formType) =>
-        formType.IsAssignableTo(typeof(Form));
 
     private static IEnumerable<Target> EnumerateTargets(Assembly assembly) =>
         assembly.ExportedTypes

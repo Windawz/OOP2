@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using WinFormsTasks.Common;
 
 namespace WinFormsTasks.Task8;
-[SelectableForm("WinQuestion (Excercise 1)")]
+[SelectableForm("WinQuestion (Excercise 1)", 1)]
 public partial class WinQuestionForm : Form {
     public WinQuestionForm() {
         InitializeComponent();

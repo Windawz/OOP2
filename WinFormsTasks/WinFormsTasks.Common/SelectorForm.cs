@@ -12,15 +12,19 @@ using System.Windows.Forms;
 namespace WinFormsTasks.Common;
 public partial class SelectorForm : Form {
     public SelectorForm() : this(Assembly.GetCallingAssembly()) { }
-
-    public SelectorForm(params (Type formType, string? formName)[] tuples) : this(TuplesToInfos(tuples)) { }
-
-    private SelectorForm(Assembly assembly) : this(SelectableFormInfo.EnumerateSelectableForms(assembly)) { }
+    public SelectorForm(IEnumerable<Type> formTypes)
+        : this(ToInfos(formTypes)) { }
+    public SelectorForm(IEnumerable<Type> formTypes, IEnumerable<string?> formNames)
+        : this(ToInfos(formTypes, formNames)) { }
+    public SelectorForm(IEnumerable<Type> formTypes, IEnumerable<string?> formNames, IEnumerable<int> priorities)
+        : this(ToInfos(formTypes, formNames, priorities)) { }
+    public SelectorForm(Assembly assembly) : this(SelectableFormInfo.EnumerateSelectableForms(assembly)) { }
 
     private SelectorForm(IEnumerable<SelectableFormInfo> infos) {
         InitializeComponent();
 
         _openerButtons = infos
+            .OrderBy(info => info.Weight)
             .Select(info => MakeOpenerButton(info))
             .ToArray();
 
@@ -63,6 +67,21 @@ public partial class SelectorForm : Form {
         return formattedName.ToString();
     }
 
-    private static IEnumerable<SelectableFormInfo> TuplesToInfos(IEnumerable<(Type formType, string? formName)> tuples) =>
-        tuples.Select(tuple => SelectableFormInfo.FromType(tuple.formType, tuple.formName));
+    private static IEnumerable<SelectableFormInfo> ToInfos(IEnumerable<Type> formTypes) =>
+        formTypes.Select(t => SelectableFormInfo.Create(t));
+
+    private static IEnumerable<SelectableFormInfo> ToInfos(IEnumerable<Type> formTypes, IEnumerable<string?> formNames) =>
+        formTypes
+            .Zip(formNames, (formType, formName) => (formType, formName))
+            .Select(tuple => SelectableFormInfo.Create(tuple.formType, tuple.formName, default));
+
+    private static IEnumerable<SelectableFormInfo> ToInfos(
+        IEnumerable<Type> formTypes,
+        IEnumerable<string?> formNames,
+        IEnumerable<int> priorities)
+    =>
+        formTypes
+            .Zip(formNames, (formType, formName) => (formType, formName))
+            .Zip(priorities, (tuple, priority) => (tuple.formType, tuple.formName, priority))
+            .Select(tuple => SelectableFormInfo.Create(tuple.formType, tuple.formName, tuple.priority));
 }
