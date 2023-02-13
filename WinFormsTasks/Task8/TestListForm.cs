@@ -15,7 +15,9 @@ public partial class TestListForm : Form {
     public TestListForm() {
         InitializeComponent();
 
-        ConfigureOwner(this);
+        FormBorderStyle = FormBorderStyle.Fixed3D;
+        Size = new Size(625, 650);
+        Text = "Работа со списками";
 
         GroupBox leftContainer = MakeLeftContainer();
         StackPanel rightContainer = MakeRightContainer(
@@ -177,12 +179,6 @@ public partial class TestListForm : Form {
             Size = new Size(290, 600),
             Text = "Список участников",
         };
-
-    private static void ConfigureOwner(Form owner) {
-        owner.FormBorderStyle = FormBorderStyle.Fixed3D;
-        owner.Size = new Size(625, 650);
-        owner.Text = "Работа со списками";
-    }
 
     private static void ShowInvalidActionMessageBox(Form owner, string text, string caption) =>
         MessageBox.Show(
