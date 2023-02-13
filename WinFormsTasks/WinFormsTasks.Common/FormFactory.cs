@@ -6,8 +6,23 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WinFormsTasks.Common;
-internal static class FormFactory {
-    public static Func<Form> Get(Type formType) =>
+internal class FormFactory {
+    private FormFactory(Func<Form> factoryMethod, Type formType) {
+        _factoryMethod = factoryMethod;
+        FormType = formType;
+    }
+
+    private readonly Func<Form> _factoryMethod;
+
+    public Type FormType { get; }
+
+    public static FormFactory Get(Type formType) =>
+        new(GetFactoryMethod(formType), formType);
+
+    public Form Make() =>
+        _factoryMethod();
+
+    private static Func<Form> GetFactoryMethod(Type formType) =>
         Expression.Lambda<Func<Form>>(
             Expression.New(formType),
             Array.Empty<ParameterExpression>())

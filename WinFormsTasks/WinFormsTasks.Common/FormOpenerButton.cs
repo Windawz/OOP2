@@ -6,34 +6,46 @@ using System.Threading.Tasks;
 
 namespace WinFormsTasks.Common;
 public class FormOpenerButton : Button {
-    public FormOpenerButton(Func<Form> factory) {
-        FormFactory = factory;
-        OpenedFormType = FormFactory.Method.ReturnType;
+    public FormOpenerButton(Type formType) : this(FormFactory.Get(formType)) { }
+
+    internal FormOpenerButton(FormFactory factory) {
+        _formFactory = factory;
 
         Click += OnClick;
     }
 
+    private readonly FormFactory _formFactory;
     private Form? _cachedOwnerForm = null;
 
-    public Type OpenedFormType { get; }
-    protected Func<Form> FormFactory { get; }
-    protected Form OwnerForm {
-        get {
-            _cachedOwnerForm ??= FindForm();
-            return _cachedOwnerForm!;
-        }
-    }
+    public Type FormType => _formFactory.FormType;
 
-    protected virtual void OnClick(object? sender, EventArgs e) {
+    public event EventHandler<FormOpenedEventArgs>? FormOpened;
+
+    private void OnClick(object? sender, EventArgs e) {
         Click -= OnClick;
         
-        var form = FormFactory();
+        var form = _formFactory.Make();
         form.FormClosing += delegate {
             Click += OnClick;
         };
 
-        OwnerForm.AddOwnedForm(form);
+        GetCachedOwnerForm().AddOwnedForm(form);
         form.Show();
         form.Activate();
+
+        FormOpened?.Invoke(this, new FormOpenedEventArgs(form));
     }
+
+    private Form GetCachedOwnerForm() {
+        _cachedOwnerForm ??= FindForm();
+        return _cachedOwnerForm!;
+    }
+
+    public class FormOpenedEventArgs : EventArgs {
+        public FormOpenedEventArgs(Form form) {
+            Form = form;
+        }
+
+        public Form Form { get; }
+    };
 }

@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace WinFormsTasks.Common;
 internal readonly record struct SelectableFormInfo(
-    Func<Form> Factory,
-    string? FormName,
-    Type FormType
+    FormFactory Factory,
+    string? FormName
 ) {
     public static IEnumerable<SelectableFormInfo> EnumerateSelectableForms(Assembly assembly) {
         var targets = EnumerateTargets(assembly);
@@ -34,8 +33,7 @@ internal readonly record struct SelectableFormInfo(
 
         return new SelectableFormInfo(
             FormFactory.Get(formType),
-            formName,
-            formType);
+            formName);
     }
 
     private static IEnumerable<Target> EnumerateValidTargets(

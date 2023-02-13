@@ -12,30 +12,39 @@ using System.Windows.Forms;
 namespace WinFormsTasks.Common;
 public partial class SelectorForm : Form {
     public SelectorForm() : this(Assembly.GetCallingAssembly()) { }
+
     public SelectorForm(params (Type formType, string? formName)[] tuples) : this(TuplesToInfos(tuples)) { }
+
     private SelectorForm(Assembly assembly) : this(SelectableFormInfo.EnumerateSelectableForms(assembly)) { }
+
     private SelectorForm(IEnumerable<SelectableFormInfo> infos) {
         InitializeComponent();
 
-        var buttons = infos
+        _openerButtons = infos
             .Select(info => MakeOpenerButton(info))
             .ToArray();
 
         var container = new StackPanel() {
             Dock = DockStyle.Fill,
         };
-        container.Controls.AddRange(buttons);
+        container.Controls.AddRange(_openerButtons);
 
         Controls.Add(container);
 
         Text = "Form Selector";
     }
 
-    private static Button MakeOpenerButton(SelectableFormInfo info) {
-        return new FormOpenerButton(info.Factory) {
+    private readonly FormOpenerButton[] _openerButtons;
+
+    public IReadOnlyList<FormOpenerButton> OpenerButtons =>
+        _openerButtons;
+
+    private static FormOpenerButton MakeOpenerButton(SelectableFormInfo info) {
+        var button = new FormOpenerButton(info.Factory) {
             AutoSize = true,
-            Text = info.FormName ?? FormatFormName(info.FormType.Name),
+            Text = info.FormName ?? FormatFormName(info.Factory.FormType.Name),
         };
+        return button;
     }
 
     private static string FormatFormName(string rawFormName) {
