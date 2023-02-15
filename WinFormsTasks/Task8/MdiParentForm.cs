@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using WinFormsTasks.Common;
 
 namespace WinFormsTasks.Task8;
-[SelectableForm("Mdi Parent Form")]
 public partial class MdiParentForm : Form {
     public MdiParentForm() {
         InitializeComponent();
