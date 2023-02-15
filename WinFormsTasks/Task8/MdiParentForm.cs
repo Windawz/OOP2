@@ -31,11 +31,13 @@ public partial class MdiParentForm : Form {
 
         Controls.Add(menuStrip);
 
+        Menu = menuStrip;
         AddSubmenu = addSubmenu;
         CloseSubmenu = closeSubmenu;
         WindowsSubmenu = windowsSubmenu;
     }
 
+    public MenuStrip Menu { get; }
     public ToolStripMenuItem AddSubmenu { get; }
     public ToolStripMenuItem CloseSubmenu { get; }
     public ToolStripMenuItem WindowsSubmenu { get; }
