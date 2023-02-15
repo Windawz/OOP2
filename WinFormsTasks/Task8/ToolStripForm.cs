@@ -49,6 +49,7 @@ public partial class ToolStripForm : MdiParentForm {
             Text = "Cascade",
         };
         windowsCascadeButton.Click += delegate {
+            CascadeButtonClicked?.Invoke(this, EventArgs.Empty);
             LayoutMdi(MdiLayout.Cascade);
         };
         toolStrip.Items.Add(windowsCascadeButton);
@@ -61,6 +62,7 @@ public partial class ToolStripForm : MdiParentForm {
             Text = "Tile Horizontally",
         };
         windowsTileButton.Click += delegate {
+            TileButtonClicked?.Invoke(this, EventArgs.Empty);
             LayoutMdi(MdiLayout.TileHorizontal);
         };
         toolStrip.Items.Add(windowsTileButton);
@@ -78,4 +80,7 @@ public partial class ToolStripForm : MdiParentForm {
         };
         toolStrip.Items.Add(closeAllButton);
     }
+
+    public event EventHandler? CascadeButtonClicked;
+    public event EventHandler? TileButtonClicked;
 }
