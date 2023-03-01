@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsTasks.Task7", "WinF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsTasks.Common", "WinFormsTasks.Common\WinFormsTasks.Common.csproj", "{5C12ECAD-3D6A-40E1-AEFB-5523B7053E80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsTasks.Task8", "Task8\WinFormsTasks.Task8.csproj", "{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsTasks.Task8", "Task8\WinFormsTasks.Task8.csproj", "{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsTasks.Task9", "WinFormsTasks.Task9\WinFormsTasks.Task9.csproj", "{2B7E4239-5392-48BC-B493-7075DCE31C23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E913FC09-C0DE-4B5C-B974-8C6701F8D4EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B7E4239-5392-48BC-B493-7075DCE31C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B7E4239-5392-48BC-B493-7075DCE31C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B7E4239-5392-48BC-B493-7075DCE31C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B7E4239-5392-48BC-B493-7075DCE31C23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
