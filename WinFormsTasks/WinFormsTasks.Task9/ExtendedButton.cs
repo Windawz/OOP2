@@ -11,7 +11,7 @@ internal class ExtendedButton : Button {
     public int ClickCount { get; private set; } = 0;
 
     protected override void OnClick(EventArgs e) {
-        ClickCount += 1;
+        ClickCount = ClickCount == 0 ? 1 : ClickCount << 1;
         base.OnClick(e);
     }
 
