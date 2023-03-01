@@ -1,6 +1,6 @@
 ﻿namespace WinFormsTasks.Task9;
 
-partial class TimerForm {
+partial class TimerUserControlForm {
     /// <summary>
     /// Required designer variable.
     /// </summary>

@@ -12,8 +12,8 @@ using WinFormsTasks.Common;
 
 namespace WinFormsTasks.Task9;
 [SelectableForm]
-public partial class TimerForm : Form {
-    public TimerForm() {
+public partial class TimerUserControlForm : Form {
+    public TimerUserControlForm() {
         InitializeComponent();
 
         var timerUserControl = new TimerUserControl() {
