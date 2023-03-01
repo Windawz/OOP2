@@ -15,5 +15,14 @@ namespace WinFormsTasks.Task9;
 public partial class TimerForm : Form {
     public TimerForm() {
         InitializeComponent();
+
+        var timerUserControl = new TimerUserControl() {
+            BorderStyle = BorderStyle.FixedSingle,
+            Dock = DockStyle.Fill,
+            TextSizeInPoints = 20.0f,
+            TimerEnabled = true,
+        };
+
+        Controls.Add(timerUserControl);
     }
 }
