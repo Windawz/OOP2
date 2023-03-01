@@ -43,7 +43,6 @@ public partial class TimerUserControl : UserControl {
             var newFont = new Font(
                 oldFont.FontFamily, value);
             _label.Font = newFont;
-            oldFont.Dispose();
         }
     }
 
