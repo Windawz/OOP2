@@ -1,3 +1,6 @@
+using System;
+using System.Windows.Forms;
+
 using WinFormsTasks.Common;
 
 namespace WinFormsTasks.Task9;
